@@ -7,7 +7,21 @@
     </head>
     <header>
         <nav>
-            <ul><a href="{% url 'book-list' %}">Book List</a></ul>
+            <ul>
+                <a href="{% url 'book-list' %}">Book List</a>
+            </ul>
+            {% if user.is_authenticated %}
+                <ul>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </ul>
+            {% else %}
+                <ul>
+                    <a href="{% url 'login' %}">Login</a>
+                </ul>
+            {% endif %}
         </nav>
     </header>
     <body>

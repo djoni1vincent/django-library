@@ -121,3 +121,7 @@ STATIC_URL = "static/"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_REDIRECT_URL = "/"  # куда после логина
+LOGOUT_REDIRECT_URL = "/"  # куда после выхода
+LOGIN_URL = "/login/"  # куда редиректить, если не залогинен
