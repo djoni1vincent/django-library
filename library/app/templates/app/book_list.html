@@ -1,7 +1,15 @@
 {% extends "main.html" %}
+{% load static %}
 {% block content %}
     <h1>My library</h1>
-    {% for book in books %}
-        <p><a href="{% url 'book-detail' book.id %}">{{ book }}</a></p>
-    {% endfor %}
+    <div class="main-container" style="padding:20px;">
+        <div class="book-list" style="display: flex; gap: 20px;">
+            {% for book in books %}
+                <div class="book-card">
+                    <img style="height: 300px;" src="{{ book.image.url }}" alt="">
+                    <p><a href="{% url 'book-detail' book.id %}">{{ book }}</a></p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock content %}
