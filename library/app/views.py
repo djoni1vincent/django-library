@@ -7,12 +7,7 @@ from .models import Book
 # Create your views here.
 
 
-def BookView(ListView):
+class BookView(ListView):
     model = Book
-
     books = model
-    context = {
-        "books": books
-    }
-
-    return render("app/index.html", context)
+    

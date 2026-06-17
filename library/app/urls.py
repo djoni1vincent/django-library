@@ -1,7 +1,5 @@
-from . import views
 from django.urls import path
+from .views import BookView
 
-urlpatterns = [
-    path('', views.index, name='index')
-]
+urlpatterns = [path("", BookView.as_view())]
 
