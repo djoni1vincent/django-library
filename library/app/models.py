@@ -26,6 +26,7 @@ class Book(models.Model):
     genres = models.ManyToManyField(Genre, related_name="books")
     isbn = ISBNField(help_text="Enter the 10 or 13 digit International Standard Book Number")
     authors = models.ManyToManyField(Author, related_name="books")
+    image = models.ImageField(upload_to='book_images/', default='book_default.jpg')
 
     def __str__(self):
         return self.name

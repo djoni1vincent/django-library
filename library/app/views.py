@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import Book
 
 
@@ -9,5 +9,9 @@ from .models import Book
 
 class BookView(ListView):
     model = Book
-    books = model
+    context_object_name = "books"
+
+class DetailBookView(DetailView):
+    model = Book
     
+

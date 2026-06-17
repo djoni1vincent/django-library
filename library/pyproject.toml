@@ -6,4 +6,5 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "django-isbn-field>=0.5.3",
+    "pillow>=12.2.0",
 ]
