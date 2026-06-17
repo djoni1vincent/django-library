@@ -12,6 +12,3 @@ class BookView(ListView):
 class DetailBookView(DetailView):
     model = Book
 
-
-
-
