@@ -11,6 +11,9 @@
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ book }}</h5>
+                        {% for authors in book.authors.all %}
+                            <small class="card-subtitle">{{ authors }}</small>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

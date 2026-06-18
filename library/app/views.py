@@ -1,4 +1,5 @@
 # from django.urls import reverse_lazy
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
@@ -10,6 +11,15 @@ from .models import Author, Book
 class BookListView(ListView):
     model = Book
     context_object_name = "books"
+
+    def get_queryset(self):
+        q = self.request.GET.get("q")
+        qs = Book.objects.all()
+
+        if q:
+            qs = Book.objects.filter(Q(name__icontains=q) | Q(authors__name__icontains=q)).distinct()
+
+        return qs
 
 
 class BookDetailView(DetailView):

@@ -14,6 +14,9 @@
             <nav class="navbar navbar-expand-lg bg-light mb-4">
                 <div class="container">
                     <a class="navbar-brand" href="{% url 'book-list' %}">Library</a>
+                    <form action="{% url 'book-list' %}" method="get">
+                        <input type="search" name="q" class="search">
+                    </form>
                     <ul class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
                             <li class="nav-item">
