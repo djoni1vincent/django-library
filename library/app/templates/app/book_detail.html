@@ -1,21 +1,25 @@
-{% extends 'main.html' %}
+{% extends "main.html" %}
 {% load static %}
 {% block content %}
-    <div style="padding: 20px; display: grid; grid-template-columns: 1fr 5fr">
-        <div class="image-book">
-            <img style="height: 400px;" src="{{ book.image.url }}" alt="">
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <img class="img-fluid rounded" src="{{ book.image.url }}" alt="">
         </div>
-        <div>
+        <div class="col-md-8">
             <h1>{{ book.name }}</h1>
-            {% for author in book.authors.all %}
-                <span>{{ author }}</span>
-            {% endfor %}
-            <p>rating:</p>
-            <p style="width: 600px;">{{ book.description }}</p>
-            Genres:
-            {% for genre in book.genres.all %}
-                <span style="color: red;">{{ genre }}</span> |
-            {% endfor %}
+            <p class="text-muted">
+                {% for author in book.authors.all %}
+                    <a href="{% url 'author-detail' author.id %}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p><strong>Rating:</strong></p>
+            <p>{{ book.description }}</p>
+            <p>
+                <strong>Genres:</strong>
+                {% for genre in book.genres.all %}
+                    <span class="badge bg-danger me-1">{{ genre }}</span>
+                {% endfor %}
+            </p>
         </div>
-    </img>
+    </div>
 {% endblock content %}

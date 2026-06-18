@@ -1,7 +1,8 @@
+# from django.urls import reverse_lazy
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView, CreateView, DeleteView
-from .models import Book
-from .forms import BookCreateForm
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
+
+from .models import Author, Book
 
 # Create your views here.
 
@@ -15,13 +16,18 @@ class BookDetailView(DetailView):
     model = Book
 
 
-class BookCreateView(CreateView):
-    model = Book
-    form_class = BookCreateForm
-    template_name = "app/book_create_form.html"
+class AuthorCreateView(CreateView):
+    model = Author
+    fields = ["name", "description"]
+    template_name = "app/author_create_form.html"
     success_url = reverse_lazy("book-list")
 
 
-class BookDeleteView(DeleteView):
-    model = Book
-    template_name = "book_delete.html"
+class AuthorDeleteView(DeleteView):
+    model = Author
+    template_name = "app/author_delete_form.html"
+
+
+class AuthorDetailView(DetailView):
+    model = Author
+    template_name = "app/author_detail.html"
