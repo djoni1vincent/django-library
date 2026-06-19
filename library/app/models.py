@@ -20,8 +20,15 @@ class Genre(models.Model):
         return self.name
 
 
-class Review(models.Model):
-    pass
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+    avatar = models.ImageField(
+        upload_to="avatars/", default="avatar-default.jpg", blank=True
+    )
+
+    def __str__(self):
+        return self.user.username
 
 
 class Book(models.Model):
@@ -38,9 +45,13 @@ class Book(models.Model):
         return self.name
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(blank=True)
-    avatar = models.ImageField(upload_to="avatars/", default="avatar-default.jpg", blank=True)
-    # reviews =
+class Review(models.Model):
+    rating = models.IntegerField(null=True, blank=True)
+    user = models.ForeignKey(Profile, blank=True, null=True, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, related_name="reviews", blank=True, null=True, on_delete=models.CASCADE)
+    decription = models.TextField(
+        blank=True, help_text="Write here your review on the book."
+    )
 
+    def __str__(self):
+        return str(self.book)
