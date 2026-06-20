@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "django-debug-toolbar>=7.0.0",
     "django-isbn-field>=0.5.3",
     "pillow>=12.2.0",
 ]
