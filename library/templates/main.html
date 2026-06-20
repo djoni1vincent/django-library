@@ -19,8 +19,13 @@
                     </form>
                     <ul class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'author-create' %}">Create Author</a>
+                            {% if request.user.is_staff %}
+                                <li>
+                                    <a class="nav-link" href="{% url 'book-create' %}">Create Book</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a class="nav-link" href="">Hello, {{ request.user }}</a>
                             </li>
                             <li class="nav-item">
                                 <form method="post" action="{% url 'logout' %}">

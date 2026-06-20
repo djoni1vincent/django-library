@@ -26,13 +26,17 @@
             <h2>Reviews:</h2>
             <div class="container">
                 {% for review in book.reviews.all %}
-                    {% if review.description %}
-                        @{{ review.user }}:
-                        <div>{{ review.decription }}</div>
-                    {% endif %}
+                    @{{ review.user }}:
+                    <div>{{ review.decription }} <span>{{ review.rating }}</span></div>
                     <hr>
                 {% endfor %}
             </div>
+        </div>
+        <div>
+            {% if user.is_authenticated and request.user.is_staff %}
+                <h2><a href="{% url 'book-delete' book.id %}">Remove Book?</a></h2>
+                <h2><a href="{% url 'book-edit' book.id %}">Edit Book</a></h2>
+            {% endif %}
         </div>
     </div>
 {% endblock content %}

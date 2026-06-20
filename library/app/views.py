@@ -1,7 +1,13 @@
-# from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Avg, Q
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 
 from .models import Author, Book
 
@@ -14,7 +20,9 @@ class BookListView(ListView):
 
     def get_queryset(self):
         q = self.request.GET.get("q")
-        qs = Book.objects.all()
+        qs = Book.objects.prefetch_related("authors").annotate(
+            avg_rating=Avg("reviews__rating")
+        )
 
         if q:
             qs = Book.objects.filter(
@@ -26,23 +34,43 @@ class BookListView(ListView):
 
 class BookDetailView(DetailView):
     model = Book
-    
+
     def get_queryset(self):
-        return Book.objects.annotate(avg_rating=Avg("reviews__rating"))
+
+        return Book.objects.prefetch_related(
+            "authors", "genres", "reviews", "reviews__user", "reviews__user__user"
+        ).annotate(avg_rating=Avg("reviews__rating"))
 
 
-class AuthorCreateView(CreateView):
-    model = Author
-    fields = ["name", "description"]
-    template_name = "app/author_create_form.html"
+class BookCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Book
+
+    permission_required = "admin.change_book"
+
+    fields = ["name", "description", "genres", "isbn", "authors", "image"]
     success_url = reverse_lazy("book-list")
 
 
-class AuthorDeleteView(DeleteView):
-    model = Author
-    template_name = "app/author_delete_form.html"
+class BookDeleteView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    DeleteView,
+):
+    permission_required = "admin.delete_book"
+    model = Book
+    success_url = reverse_lazy("book-list")
+
+
+class BookEditView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UpdateView,
+):
+    permission_required = "admin.change_book"
+    model = Book
+    fields = ["name", "description", "genres", "isbn", "authors", "image"]
+    success_url = reverse_lazy("book-list")
 
 
 class AuthorDetailView(DetailView):
     model = Author
-    template_name = "app/author_detail.html"

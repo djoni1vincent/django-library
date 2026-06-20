@@ -7,7 +7,10 @@
             <div class="col">
                 <div class="card h-100 w-75">
                     <a href="{% url 'book-detail' book.id %}">
-                        <img class="card-img-top" style="height: 450px;" src="{{ book.image.url }}" alt="">
+                        <img class="card-img-top"
+                             style="height: 450px"
+                             src="{{ book.image.url }}"
+                             alt="">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ book }}</h5>
