@@ -32,14 +32,22 @@ class Profile(models.Model):
 
 
 class Book(models.Model):
-    name = models.CharField(max_length=100, help_text="Enter title of the book")
-    description = models.TextField(help_text="Enter description of the book")
-    genres = models.ManyToManyField(Genre, related_name="books")
-    isbn = ISBNField(
-        help_text="Enter the 10 or 13 digit International Standard Book Number"
+    name = models.CharField(
+        max_length=100, help_text="Enter title of the book", unique=True
     )
-    authors = models.ManyToManyField(Author, related_name="books")
+    description = models.TextField(
+        help_text="Enter description of the book", blank=True
+    )
+    genres = models.ManyToManyField(Genre, related_name="books", blank=True)
+    isbn = ISBNField(
+        help_text="Enter the 10 or 13 digit International Standard Book Number",
+        blank=True,
+    )
+    authors = models.ManyToManyField(Author, related_name="books", blank=True)
     image = models.ImageField(upload_to="book_images/", default="book_default.jpg")
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -48,8 +56,10 @@ class Book(models.Model):
 class Review(models.Model):
     rating = models.IntegerField(null=True, blank=True)
     user = models.ForeignKey(Profile, blank=True, null=True, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, related_name="reviews", blank=True, null=True, on_delete=models.CASCADE)
-    decription = models.TextField(
+    book = models.ForeignKey(
+        Book, related_name="reviews", blank=True, null=True, on_delete=models.CASCADE
+    )
+    description = models.TextField(
         blank=True, help_text="Write here your review on the book."
     )
 

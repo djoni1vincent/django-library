@@ -4,11 +4,19 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title mb-4">Create New Book</h2>
+                    <h2 class="card-title mb-4">{% if object %}Edit Book{% else %}Create New Book{% endif %}</h2>
                     <form action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button class="btn btn-success" type="submit">Create New Book</button>
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button class="btn btn-success" type="submit">{% if object %}Save Changes{% else %}Create New Book{% endif %}</button>
                     </form>
                 </div>
             </div>

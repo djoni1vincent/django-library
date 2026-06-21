@@ -16,18 +16,25 @@ from .models import Author, Book
 
 class BookListView(ListView):
     model = Book
+    paginate_by = 9
     context_object_name = "books"
 
     def get_queryset(self):
         q = self.request.GET.get("q")
-        qs = Book.objects.prefetch_related("authors").annotate(
-            avg_rating=Avg("reviews__rating")
+        qs = (
+            Book.objects.prefetch_related("authors")
+            .annotate(avg_rating=Avg("reviews__rating"))
+            .order_by("name")
         )
 
         if q:
-            qs = Book.objects.filter(
-                Q(name__icontains=q) | Q(authors__name__icontains=q)
-            ).distinct()
+            qs = (
+                Book.objects.filter(
+                    Q(name__icontains=q) | Q(authors__name__icontains=q)
+                )
+                .distinct()
+                .order_by("name")
+            )
 
         return qs
 
@@ -50,6 +57,12 @@ class BookCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     fields = ["name", "description", "genres", "isbn", "authors", "image"]
     success_url = reverse_lazy("book-list")
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        for field in form.fields.values():
+            field.widget.attrs["class"] = "form-control"
+        return form
+
 
 class BookDeleteView(
     LoginRequiredMixin,
@@ -70,6 +83,12 @@ class BookEditView(
     model = Book
     fields = ["name", "description", "genres", "isbn", "authors", "image"]
     success_url = reverse_lazy("book-list")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        for field in form.fields.values():
+            field.widget.attrs["class"] = "form-control"
+        return form
 
 
 class AuthorDetailView(DetailView):
