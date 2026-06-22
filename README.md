@@ -2,7 +2,6 @@
 
 A Django web application for browsing and managing a book catalog with authors, genres, and reader reviews.
 
-<img "https://github.com/user-attachments/assets/06a81089-04d5-4b47-a4c4-4fc844cfa2d2" />
 ![project image](https://github.com/user-attachments/assets/06a81089-04d5-4b47-a4c4-4fc844cfa2d2)
 
 ## Features
